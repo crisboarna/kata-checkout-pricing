@@ -2,30 +2,29 @@ package com.kata.strategies;
 
 import com.kata.inventory.Item;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
- * Created by crist on 5/18/2017.
+ * Created by crist on 5/17/2017.
  */
-public class QuantityPromoPricingStrategy implements PricingStrategy {
+public class QuantityPromoPricingStrategy extends AbstractPricingStrategy{
 
-    private final Set<String> promotionItems;
     private final int numerator;
     private final int denominator;
-    private final int priority;
 
     public QuantityPromoPricingStrategy(int numerator, int denominator){
+        super(1);
         this.numerator = numerator;
         this.denominator = denominator;
-        this.priority = 1;
-        this.promotionItems = new HashSet<>();
     }
 
     public QuantityPromoPricingStrategy(int numerator, int denominator, int priority) {
+        super(priority);
         this.numerator = numerator;
         this.denominator = denominator;
-        this.priority = priority;
-        this.promotionItems = new HashSet<>();
     }
 
     @Override
@@ -56,17 +55,17 @@ public class QuantityPromoPricingStrategy implements PricingStrategy {
     }
 
     @Override
-    public void addPromotionItem(String item){
-        this.promotionItems.add(item);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        QuantityPromoPricingStrategy that = (QuantityPromoPricingStrategy) o;
+        return numerator == that.numerator &&
+                denominator == that.denominator;
     }
 
     @Override
-    public void addPromotionItems(List<String> items){
-        this.promotionItems.addAll(items);
-    }
-
-    @Override
-    public int getPriority() {
-        return this.priority;
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), numerator, denominator);
     }
 }

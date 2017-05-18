@@ -20,6 +20,15 @@ public class QuantityPromoPricingStrategyTest {
     private static final String YOGURT = "Yogurt";
 
     @Test
+    public void testNoProduct(){
+        strategy = new QuantityPromoPricingStrategy(3,2);
+
+        Map<String,List<Item>> map = new HashMap<>();
+
+        assertEquals("No promotion, no item",0.0,strategy.calculate(map),0);
+    }
+
+    @Test
     public void testOneItemNoPromoApplied(){
         Item item = new SimpleItem(YOGURT,5.0);
 

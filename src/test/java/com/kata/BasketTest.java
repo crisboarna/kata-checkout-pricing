@@ -169,8 +169,8 @@ public class BasketTest {
         Item item3 = new SimpleItem(CHEESE,3.0);
         Item item4 = new SimpleItem(CHEESE,3.0);
 
-        PricingStrategy weightedPricingStrategy = new WeightedPricingStrategy();
-        PricingStrategy quantityPromoPricingStrategy = new QuantityPromoPricingStrategy(2,1);
+        PricingStrategy weightedPricingStrategy = new WeightedPricingStrategy(2);
+        PricingStrategy quantityPromoPricingStrategy = new QuantityPromoPricingStrategy(2,1,1);
 
         basket.addItems(Arrays.asList(item,item2,item3,item4));
         basket.addPricingStrategy(weightedPricingStrategy);

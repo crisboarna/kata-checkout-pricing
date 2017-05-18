@@ -9,9 +9,11 @@ import java.util.Map;
 /**
  * Created by crist on 5/18/2017.
  */
-public class SimplePricingStrategy implements PricingStrategy {
+public class SimplePricingStrategy extends AbstractPricingStrategy {
 
-    private static final int priority = 0;
+    public SimplePricingStrategy(){
+        super(0);
+    }
 
     @Override
     public double calculate(Map<String, List<Item>> basketItems) {
@@ -29,17 +31,12 @@ public class SimplePricingStrategy implements PricingStrategy {
     }
 
     @Override
-    public void addPromotionItem(String item) {
+    public void addPromotionItem(String item){
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void addPromotionItems(List<String> items) {
+    public void addPromotionItems(List<String> items){
         throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public int getPriority() {
-        return priority;
     }
 }

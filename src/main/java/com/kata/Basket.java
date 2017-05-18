@@ -1,13 +1,11 @@
 package com.kata;
 
 import com.kata.inventory.Item;
+import com.kata.strategies.AbstractPricingStrategy;
 import com.kata.strategies.PricingStrategy;
 import com.kata.strategies.SimplePricingStrategy;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by crist on 5/18/2017.
@@ -20,6 +18,7 @@ public class Basket {
     public Basket() {
         this.shoppingItems = new HashMap<>();
         this.strategyMap = new HashMap<>();
+        this.addPricingStrategy(new SimplePricingStrategy());
     }
 
     public double getTotal() {
@@ -27,12 +26,12 @@ public class Basket {
 
         Map<String, List<Item>> basketCopy = new HashMap<>(shoppingItems);
 
-        for(PricingStrategy pricingStrategy : strategyMap.values()){
+        List<AbstractPricingStrategy> sortedPricingStrategies = new ArrayList(strategyMap.values());
+        Collections.sort(sortedPricingStrategies);
+
+        for(PricingStrategy pricingStrategy : sortedPricingStrategies){
             total += pricingStrategy.calculate(basketCopy);
         }
-
-        PricingStrategy simplePricingStrategy = new SimplePricingStrategy();
-        total += simplePricingStrategy.calculate(basketCopy);
 
         return total;
     }
