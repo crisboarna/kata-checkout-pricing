@@ -15,3 +15,7 @@ The exercise is to experiment with various models for representing money and pri
     if a shelf of 100 cans is priced using “buy two, get one free”, how do you value the stock?
 
 Keeping it simple and to the point, no web, persistence, ORM layers or frameworks.
+
+Have to refactor 
+- promotional item insertion to allow meal deal + other deals requiring x types of products
+- each strategy will log an audit of pricing decisions made
