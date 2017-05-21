@@ -1,11 +1,12 @@
 package com.kata;
 
 import com.kata.inventory.Item;
-import com.kata.strategies.AbstractPricingStrategy;
-import com.kata.strategies.PricingStrategy;
-import com.kata.strategies.SimplePricingStrategy;
+import com.kata.pricing.PricingTerminal;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by crist on 5/18/2017.
@@ -13,27 +14,15 @@ import java.util.*;
 public class Basket {
 
     private final Map<String,List<Item>> shoppingItems;
-    private final Map<Class<? extends PricingStrategy>, PricingStrategy> strategyMap;
+    private final PricingTerminal pricingTerminal;
 
-    public Basket() {
+    public Basket(PricingTerminal pricingTerminal) {
+        this.pricingTerminal = pricingTerminal;
         this.shoppingItems = new HashMap<>();
-        this.strategyMap = new HashMap<>();
-        this.addPricingStrategy(new SimplePricingStrategy());
     }
 
-    public double getTotal() {
-        double total = 0 ;
-
-        Map<String, List<Item>> basketCopy = new HashMap<>(shoppingItems);
-
-        List<AbstractPricingStrategy> sortedPricingStrategies = new ArrayList(strategyMap.values());
-        Collections.sort(sortedPricingStrategies);
-
-        for(PricingStrategy pricingStrategy : sortedPricingStrategies){
-            total += pricingStrategy.calculate(basketCopy);
-        }
-
-        return total;
+    public double getSum() {
+        return pricingTerminal.getBasketTotal(shoppingItems);
     }
 
     public void addItem(Item item){
@@ -43,21 +32,9 @@ public class Basket {
         shoppingItems.get(item.getName()).add(item);
     }
 
-    public void addItems(List<Item> items){
-        for(Item item : items){
+    public void addItems(List<Item> items) {
+        for (Item item : items) {
             this.addItem(item);
         }
-    }
-
-    public void addPricingStrategy(PricingStrategy pricingStrategy){
-        strategyMap.put(pricingStrategy.getClass(),pricingStrategy);
-    }
-
-    public void addPromotion(Class<? extends PricingStrategy> pricingStrategy, String promotionItem){
-        strategyMap.get(pricingStrategy).addPromotionItem(promotionItem);
-    }
-
-    public void addPromotions(Class<? extends PricingStrategy> pricingStrategy, List<String> promotionItems){
-        strategyMap.get(pricingStrategy).addPromotionItems(promotionItems);
     }
 }

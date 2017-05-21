@@ -2,7 +2,7 @@ package com.kata.strategies;
 
 import com.kata.inventory.Item;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,16 +16,17 @@ public class SimplePricingStrategy extends AbstractPricingStrategy {
     }
 
     @Override
-    public double calculate(Map<String, List<Item>> basketItems) {
+    protected Map<String, List<Item>> getStrategyEligibleItems(Map<String, List<Item>> basketItems) {
+        return new HashMap<>(basketItems);
+    }
+
+    @Override
+    protected double getTotal(Map<String, List<Item>> eligibleItems) {
         double total = 0;
-        List<String> parsedItems = new ArrayList<>();
 
-        for(Map.Entry<String,List<Item>> entry : basketItems.entrySet()){
+        for(Map.Entry<String,List<Item>> entry : eligibleItems.entrySet()){
             total += entry.getValue().stream().map(Item::getPrice).reduce(0.0,(x,y)->x+y);
-            parsedItems.add(entry.getKey());
         }
-
-        basketItems.keySet().removeAll(parsedItems);
 
         return total;
     }

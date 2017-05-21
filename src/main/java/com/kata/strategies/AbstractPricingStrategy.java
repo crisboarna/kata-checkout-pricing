@@ -1,9 +1,8 @@
 package com.kata.strategies;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import com.kata.inventory.Item;
+
+import java.util.*;
 
 /**
  * Created by crist on 5/18/2017.
@@ -17,6 +16,26 @@ public abstract class AbstractPricingStrategy implements PricingStrategy, Compar
         this.priority = priority;
         this.promotionItems = new HashSet<>();
     }
+
+    public double calculate(Map<String, List<Item>> basketItems){
+        Map<String,List<Item>> eligibleItems = getStrategyEligibleItems(basketItems);
+
+        removeProcessedItems(basketItems,eligibleItems);
+
+        if(eligibleItems != null && !eligibleItems.isEmpty()){
+            return getTotal(eligibleItems);
+        }
+
+        return 0;
+    }
+
+    private void removeProcessedItems(Map<String, List<Item>> basketItems, Map<String, List<Item>> eligibleItems) {
+        basketItems.entrySet().removeAll(eligibleItems.entrySet());
+    }
+
+    protected abstract Map<String,List<Item>> getStrategyEligibleItems(Map<String,List<Item>> basketItems);
+
+    protected abstract double getTotal(Map<String,List<Item>> eligibleItems);
 
     @Override
     public void addPromotionItem(String item){
